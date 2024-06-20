@@ -1,0 +1,78 @@
+  {% assign avg_rating = block.settings.product.metafields.demo.avg_rating.value | round %}
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  </head>
+
+  <button id="review_create" type="button" class="btn btn-dark btn-lg btn-block active" style="font-size: 1.75rem; background-color: black; height: 4rem">Create Review</button>
+
+  <br></br>
+  <div id="reviewSection" style="display: none; color:{{ block.settings.colour }}">
+    <div style="display: block;">
+      <h3>How would you rate this product?</h3>
+      <h3>Share images or videos</h3>
+      <div class="input-group mb-3">
+        <div class="custom-file" style="font-size: 1.5rem">
+          <input type="file" class="custom-file-input" id="inputGroupFile02">
+          <label class="custom-file-label" for="inputGroupFile02">Choose file</label>
+        </div>
+        <div class="input-group-append">
+          <span class="input-group-text" style="font-size: 1.5rem" id="uploadButton">Upload</span>
+        </div>
+      </div>
+      <div id="uploadedImage" class="mt-3" style="display: none;">
+        <h3>Uploaded Image:</h3>
+        <img id="uploadedImagePreview" src="" alt="Uploaded Image" class="img-fluid">
+      </div>
+      <h3>Title your review</h3>
+      <div class="input-group" >
+        <textarea class="form-control" placeholder="What's most important to know" aria-label="With textarea" style="font-size: 1.5rem"></textarea>
+      </div>
+      <h3>Write your review</h3>
+      <div class="input-group" >
+        <textarea class="form-control" placeholder="What did you like and disliked? What did you use the product for?" aria-label="With textarea" style="font-size: 1.5rem; height: 15rem"></textarea>
+      </div>
+    </div>
+    <br></br>
+    <button id="review_submit" type="button" data-product-id="{{ product.id }}" class="btn btn-dark btn-lg btn-block active" style="font-size: 1.75rem; background-color: black; height: 4rem">Submit</button>
+    Type: {{ product.metafields.information.directions.type }}
+    Value: {{ product.metafields.information.directions.value }}
+  </div>
+
+  <br></br>
+  <span style="font-size: 3rem">sample review based on data</span>
+  <div style="color:{{ block.settings.colour }}">
+    <div style="display: inline-flex; vertical-align: top;">
+      <img src="{{ "image.png" | asset_img_url: '15x' }}" height="25" width="25" loading="lazy" style="margin-right: 10px;">
+      <h3 style="margin: 0; margin-left: "1rem">Tanuj Gupta</h3>
+    </div>
+    <div style="display: inline-block; color: "black">
+      {% render 'stars', rating: avg_rating %}
+      <h4 style="font-weight: bold">Does not do the only thing it's supposed to do</h4>
+      <p style="color: black; fontSize: 0.05rem">
+        ..yes, the clock doesn't work. It stops, ALWAYS. We tried several types of batteries, Duracell, normal Eveready, Dura Cell Chota Power - thinking it to have compatibility issues with certain batteries. But no, it only tells you correct 2 times a day, and you need to know the time already to say if it's telling correct or not. Extremely substandard product, very flimsy machine box. Just looks decent, which is why we bought.
+      </p>
+    </div>
+  </div>
+
+  {% if avg_rating >= 4 %}
+    <div style="margin-top: 10px;">
+      <img src="{{ "thumbs-up.png" | asset_img_url: '15x' }}" height="15" width="15" loading="lazy" style="margin-right: 5px;">
+      {{ 'ratings.home.recommendationText' | t }}
+    </div>
+  {% endif %}
+
+  {% schema %}
+  {
+    "name": "Star Rating",
+    "target": "section",
+    "stylesheet": "app.css",
+    "javascript": "app.js",
+    "settings": [
+      { "type": "product", "id": "product", "label": "Product", "autofill": true },
+      { "type": "color", "id": "colour", "label": "Star Colour", "default": "#FFD700" }
+    ]
+  }
+  {% endschema %}
+
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
